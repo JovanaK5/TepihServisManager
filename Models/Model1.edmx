@@ -558,7 +558,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="TepihServisDBEntities" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="TepihServisDBEntities1" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Admin" EntityType="Self.Admin" />
           <EntitySet Name="Dostava" EntityType="Self.Dostava" />
           <EntitySet Name="Klijent" EntityType="Self.Klijent" />
@@ -627,7 +627,7 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="TepihServisDBModelStoreContainer" CdmEntityContainer="TepihServisDBEntities">
+        <EntityContainerMapping StorageEntityContainer="TepihServisDBModelStoreContainer" CdmEntityContainer="TepihServisDBEntities1">
           <EntitySetMapping Name="Admin">
             <EntityTypeMapping TypeName="TepihServisDBModel.Admin">
               <MappingFragment StoreEntitySet="Admin">
