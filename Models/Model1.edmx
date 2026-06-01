@@ -1,0 +1,780 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="TepihServisDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Admin">
+          <Key>
+            <PropertyRef Name="AdminID" />
+          </Key>
+          <Property Name="AdminID" Type="int" Nullable="false" />
+          <Property Name="Kancelarija" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Dostava">
+          <Key>
+            <PropertyRef Name="DostavaID" />
+          </Key>
+          <Property Name="DostavaID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Adresa" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="DatumDostave" Type="datetime" />
+          <Property Name="NarudzbinaID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Klijent">
+          <Key>
+            <PropertyRef Name="KlijentID" />
+          </Key>
+          <Property Name="KlijentID" Type="int" Nullable="false" />
+          <Property Name="Telefon" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="Adresa" Type="nvarchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Komentar">
+          <Key>
+            <PropertyRef Name="KomentarID" />
+          </Key>
+          <Property Name="KomentarID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Tekst" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="Datum" Type="datetime" />
+          <Property Name="KlijentID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Korisnik">
+          <Key>
+            <PropertyRef Name="KorisnikID" />
+          </Key>
+          <Property Name="KorisnikID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Ime" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Lozinka" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Uloga" Type="nvarchar" MaxLength="20" />
+        </EntityType>
+        <EntityType Name="Narudzbina">
+          <Key>
+            <PropertyRef Name="NarudzbinaID" />
+          </Key>
+          <Property Name="NarudzbinaID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Datum" Type="datetime" />
+          <Property Name="KlijentID" Type="int" Nullable="false" />
+          <Property Name="StatusID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Ocjena">
+          <Key>
+            <PropertyRef Name="OcjenaID" />
+          </Key>
+          <Property Name="OcjenaID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Vrijednost" Type="int" />
+          <Property Name="KlijentID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="StatusNarudzbine">
+          <Key>
+            <PropertyRef Name="StatusID" />
+          </Key>
+          <Property Name="StatusID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Naziv" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="StavkaNarudzbine">
+          <Key>
+            <PropertyRef Name="StavkaID" />
+          </Key>
+          <Property Name="StavkaID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Povrsina" Type="decimal" Precision="10" Scale="2" Nullable="false" />
+          <Property Name="Cijena" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="NarudzbinaID" Type="int" Nullable="false" />
+          <Property Name="TepihID" Type="int" Nullable="false" />
+          <Property Name="UslugaID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Tepih">
+          <Key>
+            <PropertyRef Name="TepihID" />
+          </Key>
+          <Property Name="TepihID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Naziv" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Tip" Type="nvarchar" MaxLength="50" />
+          <Property Name="Materijal" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Usluga">
+          <Key>
+            <PropertyRef Name="UslugaID" />
+          </Key>
+          <Property Name="UslugaID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Naziv" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="CijenaPoKvadratu" Type="decimal" Precision="10" Scale="2" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Zaposleni">
+          <Key>
+            <PropertyRef Name="ZaposleniID" />
+          </Key>
+          <Property Name="ZaposleniID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Ime" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Pozicija" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Plata" Type="decimal" Precision="10" Scale="2" />
+        </EntityType>
+        <Association Name="FK__Admin__AdminID__3B75D760">
+          <End Role="Korisnik" Type="Self.Korisnik" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Admin" Type="Self.Admin" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Korisnik">
+              <PropertyRef Name="KorisnikID" />
+            </Principal>
+            <Dependent Role="Admin">
+              <PropertyRef Name="AdminID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Dostava__Narudzb__534D60F1">
+          <End Role="Narudzbina" Type="Self.Narudzbina" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Dostava" Type="Self.Dostava" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Narudzbina">
+              <PropertyRef Name="NarudzbinaID" />
+            </Principal>
+            <Dependent Role="Dostava">
+              <PropertyRef Name="NarudzbinaID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Klijent__Klijent__3E52440B">
+          <End Role="Korisnik" Type="Self.Korisnik" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Klijent" Type="Self.Klijent" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Korisnik">
+              <PropertyRef Name="KorisnikID" />
+            </Principal>
+            <Dependent Role="Klijent">
+              <PropertyRef Name="KlijentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Komentar__Klijen__571DF1D5">
+          <End Role="Klijent" Type="Self.Klijent" Multiplicity="1" />
+          <End Role="Komentar" Type="Self.Komentar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Klijent">
+              <PropertyRef Name="KlijentID" />
+            </Principal>
+            <Dependent Role="Komentar">
+              <PropertyRef Name="KlijentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Narudzbin__Klije__44FF419A">
+          <End Role="Klijent" Type="Self.Klijent" Multiplicity="1" />
+          <End Role="Narudzbina" Type="Self.Narudzbina" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Klijent">
+              <PropertyRef Name="KlijentID" />
+            </Principal>
+            <Dependent Role="Narudzbina">
+              <PropertyRef Name="KlijentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Narudzbin__Statu__45F365D3">
+          <End Role="StatusNarudzbine" Type="Self.StatusNarudzbine" Multiplicity="1" />
+          <End Role="Narudzbina" Type="Self.Narudzbina" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="StatusNarudzbine">
+              <PropertyRef Name="StatusID" />
+            </Principal>
+            <Dependent Role="Narudzbina">
+              <PropertyRef Name="StatusID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Ocjena__KlijentI__5AEE82B9">
+          <End Role="Klijent" Type="Self.Klijent" Multiplicity="1" />
+          <End Role="Ocjena" Type="Self.Ocjena" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Klijent">
+              <PropertyRef Name="KlijentID" />
+            </Principal>
+            <Dependent Role="Ocjena">
+              <PropertyRef Name="KlijentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__StavkaNar__Narud__4D94879B">
+          <End Role="Narudzbina" Type="Self.Narudzbina" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="StavkaNarudzbine" Type="Self.StavkaNarudzbine" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Narudzbina">
+              <PropertyRef Name="NarudzbinaID" />
+            </Principal>
+            <Dependent Role="StavkaNarudzbine">
+              <PropertyRef Name="NarudzbinaID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__StavkaNar__Tepih__4E88ABD4">
+          <End Role="Tepih" Type="Self.Tepih" Multiplicity="1" />
+          <End Role="StavkaNarudzbine" Type="Self.StavkaNarudzbine" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tepih">
+              <PropertyRef Name="TepihID" />
+            </Principal>
+            <Dependent Role="StavkaNarudzbine">
+              <PropertyRef Name="TepihID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__StavkaNar__Uslug__4F7CD00D">
+          <End Role="Usluga" Type="Self.Usluga" Multiplicity="1" />
+          <End Role="StavkaNarudzbine" Type="Self.StavkaNarudzbine" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usluga">
+              <PropertyRef Name="UslugaID" />
+            </Principal>
+            <Dependent Role="StavkaNarudzbine">
+              <PropertyRef Name="UslugaID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="BrojAktivnihNarudzbinaKlijenta" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int">
+          <Parameter Name="KlijentID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="Sp_FiltrirajNarudzbine" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="StatusID" Type="int" Mode="In" />
+          <Parameter Name="KlijentID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="UkupnaCijenaNarudzbine" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="decimal">
+          <Parameter Name="NarudzbinaID" Type="int" Mode="In" />
+        </Function>
+        <EntityContainer Name="TepihServisDBModelStoreContainer">
+          <EntitySet Name="Admin" EntityType="Self.Admin" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Dostava" EntityType="Self.Dostava" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Klijent" EntityType="Self.Klijent" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Komentar" EntityType="Self.Komentar" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Korisnik" EntityType="Self.Korisnik" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Narudzbina" EntityType="Self.Narudzbina" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Ocjena" EntityType="Self.Ocjena" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="StatusNarudzbine" EntityType="Self.StatusNarudzbine" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="StavkaNarudzbine" EntityType="Self.StavkaNarudzbine" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tepih" EntityType="Self.Tepih" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Usluga" EntityType="Self.Usluga" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Zaposleni" EntityType="Self.Zaposleni" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Admin__AdminID__3B75D760" Association="Self.FK__Admin__AdminID__3B75D760">
+            <End Role="Korisnik" EntitySet="Korisnik" />
+            <End Role="Admin" EntitySet="Admin" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Dostava__Narudzb__534D60F1" Association="Self.FK__Dostava__Narudzb__534D60F1">
+            <End Role="Narudzbina" EntitySet="Narudzbina" />
+            <End Role="Dostava" EntitySet="Dostava" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Klijent__Klijent__3E52440B" Association="Self.FK__Klijent__Klijent__3E52440B">
+            <End Role="Korisnik" EntitySet="Korisnik" />
+            <End Role="Klijent" EntitySet="Klijent" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Komentar__Klijen__571DF1D5" Association="Self.FK__Komentar__Klijen__571DF1D5">
+            <End Role="Klijent" EntitySet="Klijent" />
+            <End Role="Komentar" EntitySet="Komentar" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Narudzbin__Klije__44FF419A" Association="Self.FK__Narudzbin__Klije__44FF419A">
+            <End Role="Klijent" EntitySet="Klijent" />
+            <End Role="Narudzbina" EntitySet="Narudzbina" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Narudzbin__Statu__45F365D3" Association="Self.FK__Narudzbin__Statu__45F365D3">
+            <End Role="StatusNarudzbine" EntitySet="StatusNarudzbine" />
+            <End Role="Narudzbina" EntitySet="Narudzbina" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Ocjena__KlijentI__5AEE82B9" Association="Self.FK__Ocjena__KlijentI__5AEE82B9">
+            <End Role="Klijent" EntitySet="Klijent" />
+            <End Role="Ocjena" EntitySet="Ocjena" />
+          </AssociationSet>
+          <AssociationSet Name="FK__StavkaNar__Narud__4D94879B" Association="Self.FK__StavkaNar__Narud__4D94879B">
+            <End Role="Narudzbina" EntitySet="Narudzbina" />
+            <End Role="StavkaNarudzbine" EntitySet="StavkaNarudzbine" />
+          </AssociationSet>
+          <AssociationSet Name="FK__StavkaNar__Tepih__4E88ABD4" Association="Self.FK__StavkaNar__Tepih__4E88ABD4">
+            <End Role="Tepih" EntitySet="Tepih" />
+            <End Role="StavkaNarudzbine" EntitySet="StavkaNarudzbine" />
+          </AssociationSet>
+          <AssociationSet Name="FK__StavkaNar__Uslug__4F7CD00D" Association="Self.FK__StavkaNar__Uslug__4F7CD00D">
+            <End Role="Usluga" EntitySet="Usluga" />
+            <End Role="StavkaNarudzbine" EntitySet="StavkaNarudzbine" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="TepihServisDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Admin">
+          <Key>
+            <PropertyRef Name="AdminID" />
+          </Key>
+          <Property Name="AdminID" Type="Int32" Nullable="false" />
+          <Property Name="Kancelarija" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Korisnik" Relationship="Self.FK__Admin__AdminID__3B75D760" FromRole="Admin" ToRole="Korisnik" />
+        </EntityType>
+        <EntityType Name="Dostava">
+          <Key>
+            <PropertyRef Name="DostavaID" />
+          </Key>
+          <Property Name="DostavaID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Adresa" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="DatumDostave" Type="DateTime" Precision="3" />
+          <Property Name="NarudzbinaID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Narudzbina" Relationship="Self.FK__Dostava__Narudzb__534D60F1" FromRole="Dostava" ToRole="Narudzbina" />
+        </EntityType>
+        <EntityType Name="Klijent">
+          <Key>
+            <PropertyRef Name="KlijentID" />
+          </Key>
+          <Property Name="KlijentID" Type="Int32" Nullable="false" />
+          <Property Name="Telefon" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Adresa" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Korisnik" Relationship="Self.FK__Klijent__Klijent__3E52440B" FromRole="Klijent" ToRole="Korisnik" />
+          <NavigationProperty Name="Komentar" Relationship="Self.FK__Komentar__Klijen__571DF1D5" FromRole="Klijent" ToRole="Komentar" />
+          <NavigationProperty Name="Narudzbina" Relationship="Self.FK__Narudzbin__Klije__44FF419A" FromRole="Klijent" ToRole="Narudzbina" />
+          <NavigationProperty Name="Ocjena" Relationship="Self.FK__Ocjena__KlijentI__5AEE82B9" FromRole="Klijent" ToRole="Ocjena" />
+        </EntityType>
+        <EntityType Name="Komentar">
+          <Key>
+            <PropertyRef Name="KomentarID" />
+          </Key>
+          <Property Name="KomentarID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Tekst" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Datum" Type="DateTime" Precision="3" />
+          <Property Name="KlijentID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Klijent" Relationship="Self.FK__Komentar__Klijen__571DF1D5" FromRole="Komentar" ToRole="Klijent" />
+        </EntityType>
+        <EntityType Name="Korisnik">
+          <Key>
+            <PropertyRef Name="KorisnikID" />
+          </Key>
+          <Property Name="KorisnikID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Ime" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Lozinka" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Uloga" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Admin" Relationship="Self.FK__Admin__AdminID__3B75D760" FromRole="Korisnik" ToRole="Admin" />
+          <NavigationProperty Name="Klijent" Relationship="Self.FK__Klijent__Klijent__3E52440B" FromRole="Korisnik" ToRole="Klijent" />
+        </EntityType>
+        <EntityType Name="Narudzbina">
+          <Key>
+            <PropertyRef Name="NarudzbinaID" />
+          </Key>
+          <Property Name="NarudzbinaID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Datum" Type="DateTime" Precision="3" />
+          <Property Name="KlijentID" Type="Int32" Nullable="false" />
+          <Property Name="StatusID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Dostava" Relationship="Self.FK__Dostava__Narudzb__534D60F1" FromRole="Narudzbina" ToRole="Dostava" />
+          <NavigationProperty Name="Klijent" Relationship="Self.FK__Narudzbin__Klije__44FF419A" FromRole="Narudzbina" ToRole="Klijent" />
+          <NavigationProperty Name="StatusNarudzbine" Relationship="Self.FK__Narudzbin__Statu__45F365D3" FromRole="Narudzbina" ToRole="StatusNarudzbine" />
+          <NavigationProperty Name="StavkaNarudzbine" Relationship="Self.FK__StavkaNar__Narud__4D94879B" FromRole="Narudzbina" ToRole="StavkaNarudzbine" />
+        </EntityType>
+        <EntityType Name="Ocjena">
+          <Key>
+            <PropertyRef Name="OcjenaID" />
+          </Key>
+          <Property Name="OcjenaID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Vrijednost" Type="Int32" />
+          <Property Name="KlijentID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Klijent" Relationship="Self.FK__Ocjena__KlijentI__5AEE82B9" FromRole="Ocjena" ToRole="Klijent" />
+        </EntityType>
+        <EntityType Name="StatusNarudzbine">
+          <Key>
+            <PropertyRef Name="StatusID" />
+          </Key>
+          <Property Name="StatusID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Naziv" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Narudzbina" Relationship="Self.FK__Narudzbin__Statu__45F365D3" FromRole="StatusNarudzbine" ToRole="Narudzbina" />
+        </EntityType>
+        <EntityType Name="StavkaNarudzbine">
+          <Key>
+            <PropertyRef Name="StavkaID" />
+          </Key>
+          <Property Name="StavkaID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Povrsina" Type="Decimal" Precision="10" Scale="2" Nullable="false" />
+          <Property Name="Cijena" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="NarudzbinaID" Type="Int32" Nullable="false" />
+          <Property Name="TepihID" Type="Int32" Nullable="false" />
+          <Property Name="UslugaID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Narudzbina" Relationship="Self.FK__StavkaNar__Narud__4D94879B" FromRole="StavkaNarudzbine" ToRole="Narudzbina" />
+          <NavigationProperty Name="Tepih" Relationship="Self.FK__StavkaNar__Tepih__4E88ABD4" FromRole="StavkaNarudzbine" ToRole="Tepih" />
+          <NavigationProperty Name="Usluga" Relationship="Self.FK__StavkaNar__Uslug__4F7CD00D" FromRole="StavkaNarudzbine" ToRole="Usluga" />
+        </EntityType>
+        <EntityType Name="Tepih">
+          <Key>
+            <PropertyRef Name="TepihID" />
+          </Key>
+          <Property Name="TepihID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Naziv" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Tip" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Materijal" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="StavkaNarudzbine" Relationship="Self.FK__StavkaNar__Tepih__4E88ABD4" FromRole="Tepih" ToRole="StavkaNarudzbine" />
+        </EntityType>
+        <EntityType Name="Usluga">
+          <Key>
+            <PropertyRef Name="UslugaID" />
+          </Key>
+          <Property Name="UslugaID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Naziv" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CijenaPoKvadratu" Type="Decimal" Precision="10" Scale="2" Nullable="false" />
+          <NavigationProperty Name="StavkaNarudzbine" Relationship="Self.FK__StavkaNar__Uslug__4F7CD00D" FromRole="Usluga" ToRole="StavkaNarudzbine" />
+        </EntityType>
+        <EntityType Name="Zaposleni">
+          <Key>
+            <PropertyRef Name="ZaposleniID" />
+          </Key>
+          <Property Name="ZaposleniID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Ime" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Pozicija" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Plata" Type="Decimal" Precision="10" Scale="2" />
+        </EntityType>
+        <Association Name="FK__Admin__AdminID__3B75D760">
+          <End Role="Korisnik" Type="Self.Korisnik" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Admin" Type="Self.Admin" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Korisnik">
+              <PropertyRef Name="KorisnikID" />
+            </Principal>
+            <Dependent Role="Admin">
+              <PropertyRef Name="AdminID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Dostava__Narudzb__534D60F1">
+          <End Role="Narudzbina" Type="Self.Narudzbina" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Dostava" Type="Self.Dostava" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Narudzbina">
+              <PropertyRef Name="NarudzbinaID" />
+            </Principal>
+            <Dependent Role="Dostava">
+              <PropertyRef Name="NarudzbinaID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Klijent__Klijent__3E52440B">
+          <End Role="Korisnik" Type="Self.Korisnik" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Klijent" Type="Self.Klijent" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Korisnik">
+              <PropertyRef Name="KorisnikID" />
+            </Principal>
+            <Dependent Role="Klijent">
+              <PropertyRef Name="KlijentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Komentar__Klijen__571DF1D5">
+          <End Role="Klijent" Type="Self.Klijent" Multiplicity="1" />
+          <End Role="Komentar" Type="Self.Komentar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Klijent">
+              <PropertyRef Name="KlijentID" />
+            </Principal>
+            <Dependent Role="Komentar">
+              <PropertyRef Name="KlijentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Narudzbin__Klije__44FF419A">
+          <End Role="Klijent" Type="Self.Klijent" Multiplicity="1" />
+          <End Role="Narudzbina" Type="Self.Narudzbina" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Klijent">
+              <PropertyRef Name="KlijentID" />
+            </Principal>
+            <Dependent Role="Narudzbina">
+              <PropertyRef Name="KlijentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Ocjena__KlijentI__5AEE82B9">
+          <End Role="Klijent" Type="Self.Klijent" Multiplicity="1" />
+          <End Role="Ocjena" Type="Self.Ocjena" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Klijent">
+              <PropertyRef Name="KlijentID" />
+            </Principal>
+            <Dependent Role="Ocjena">
+              <PropertyRef Name="KlijentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Narudzbin__Statu__45F365D3">
+          <End Role="StatusNarudzbine" Type="Self.StatusNarudzbine" Multiplicity="1" />
+          <End Role="Narudzbina" Type="Self.Narudzbina" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="StatusNarudzbine">
+              <PropertyRef Name="StatusID" />
+            </Principal>
+            <Dependent Role="Narudzbina">
+              <PropertyRef Name="StatusID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__StavkaNar__Narud__4D94879B">
+          <End Role="Narudzbina" Type="Self.Narudzbina" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="StavkaNarudzbine" Type="Self.StavkaNarudzbine" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Narudzbina">
+              <PropertyRef Name="NarudzbinaID" />
+            </Principal>
+            <Dependent Role="StavkaNarudzbine">
+              <PropertyRef Name="NarudzbinaID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__StavkaNar__Tepih__4E88ABD4">
+          <End Role="Tepih" Type="Self.Tepih" Multiplicity="1" />
+          <End Role="StavkaNarudzbine" Type="Self.StavkaNarudzbine" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tepih">
+              <PropertyRef Name="TepihID" />
+            </Principal>
+            <Dependent Role="StavkaNarudzbine">
+              <PropertyRef Name="TepihID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__StavkaNar__Uslug__4F7CD00D">
+          <End Role="Usluga" Type="Self.Usluga" Multiplicity="1" />
+          <End Role="StavkaNarudzbine" Type="Self.StavkaNarudzbine" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usluga">
+              <PropertyRef Name="UslugaID" />
+            </Principal>
+            <Dependent Role="StavkaNarudzbine">
+              <PropertyRef Name="UslugaID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="TepihServisDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Admin" EntityType="Self.Admin" />
+          <EntitySet Name="Dostava" EntityType="Self.Dostava" />
+          <EntitySet Name="Klijent" EntityType="Self.Klijent" />
+          <EntitySet Name="Komentar" EntityType="Self.Komentar" />
+          <EntitySet Name="Korisnik" EntityType="Self.Korisnik" />
+          <EntitySet Name="Narudzbina" EntityType="Self.Narudzbina" />
+          <EntitySet Name="Ocjena" EntityType="Self.Ocjena" />
+          <EntitySet Name="StatusNarudzbine" EntityType="Self.StatusNarudzbine" />
+          <EntitySet Name="StavkaNarudzbine" EntityType="Self.StavkaNarudzbine" />
+          <EntitySet Name="Tepih" EntityType="Self.Tepih" />
+          <EntitySet Name="Usluga" EntityType="Self.Usluga" />
+          <EntitySet Name="Zaposleni" EntityType="Self.Zaposleni" />
+          <AssociationSet Name="FK__Admin__AdminID__3B75D760" Association="Self.FK__Admin__AdminID__3B75D760">
+            <End Role="Korisnik" EntitySet="Korisnik" />
+            <End Role="Admin" EntitySet="Admin" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Dostava__Narudzb__534D60F1" Association="Self.FK__Dostava__Narudzb__534D60F1">
+            <End Role="Narudzbina" EntitySet="Narudzbina" />
+            <End Role="Dostava" EntitySet="Dostava" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Klijent__Klijent__3E52440B" Association="Self.FK__Klijent__Klijent__3E52440B">
+            <End Role="Korisnik" EntitySet="Korisnik" />
+            <End Role="Klijent" EntitySet="Klijent" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Komentar__Klijen__571DF1D5" Association="Self.FK__Komentar__Klijen__571DF1D5">
+            <End Role="Klijent" EntitySet="Klijent" />
+            <End Role="Komentar" EntitySet="Komentar" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Narudzbin__Klije__44FF419A" Association="Self.FK__Narudzbin__Klije__44FF419A">
+            <End Role="Klijent" EntitySet="Klijent" />
+            <End Role="Narudzbina" EntitySet="Narudzbina" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Ocjena__KlijentI__5AEE82B9" Association="Self.FK__Ocjena__KlijentI__5AEE82B9">
+            <End Role="Klijent" EntitySet="Klijent" />
+            <End Role="Ocjena" EntitySet="Ocjena" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Narudzbin__Statu__45F365D3" Association="Self.FK__Narudzbin__Statu__45F365D3">
+            <End Role="StatusNarudzbine" EntitySet="StatusNarudzbine" />
+            <End Role="Narudzbina" EntitySet="Narudzbina" />
+          </AssociationSet>
+          <AssociationSet Name="FK__StavkaNar__Narud__4D94879B" Association="Self.FK__StavkaNar__Narud__4D94879B">
+            <End Role="Narudzbina" EntitySet="Narudzbina" />
+            <End Role="StavkaNarudzbine" EntitySet="StavkaNarudzbine" />
+          </AssociationSet>
+          <AssociationSet Name="FK__StavkaNar__Tepih__4E88ABD4" Association="Self.FK__StavkaNar__Tepih__4E88ABD4">
+            <End Role="Tepih" EntitySet="Tepih" />
+            <End Role="StavkaNarudzbine" EntitySet="StavkaNarudzbine" />
+          </AssociationSet>
+          <AssociationSet Name="FK__StavkaNar__Uslug__4F7CD00D" Association="Self.FK__StavkaNar__Uslug__4F7CD00D">
+            <End Role="Usluga" EntitySet="Usluga" />
+            <End Role="StavkaNarudzbine" EntitySet="StavkaNarudzbine" />
+          </AssociationSet>
+          <FunctionImport Name="Sp_FiltrirajNarudzbine" ReturnType="Collection(TepihServisDBModel.Sp_FiltrirajNarudzbine_Result)">
+            <Parameter Name="StatusID" Mode="In" Type="Int32" />
+            <Parameter Name="KlijentID" Mode="In" Type="Int32" />
+          </FunctionImport>
+        </EntityContainer>
+        <ComplexType Name="Sp_FiltrirajNarudzbine_Result">
+          <Property Type="Int32" Name="NarudzbinaID" Nullable="false" />
+          <Property Type="DateTime" Name="Datum" Nullable="true" Precision="23" />
+          <Property Type="String" Name="StatusNaziv" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="KlijentIme" Nullable="false" MaxLength="50" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="TepihServisDBModelStoreContainer" CdmEntityContainer="TepihServisDBEntities">
+          <EntitySetMapping Name="Admin">
+            <EntityTypeMapping TypeName="TepihServisDBModel.Admin">
+              <MappingFragment StoreEntitySet="Admin">
+                <ScalarProperty Name="AdminID" ColumnName="AdminID" />
+                <ScalarProperty Name="Kancelarija" ColumnName="Kancelarija" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Dostava">
+            <EntityTypeMapping TypeName="TepihServisDBModel.Dostava">
+              <MappingFragment StoreEntitySet="Dostava">
+                <ScalarProperty Name="DostavaID" ColumnName="DostavaID" />
+                <ScalarProperty Name="Adresa" ColumnName="Adresa" />
+                <ScalarProperty Name="DatumDostave" ColumnName="DatumDostave" />
+                <ScalarProperty Name="NarudzbinaID" ColumnName="NarudzbinaID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Klijent">
+            <EntityTypeMapping TypeName="TepihServisDBModel.Klijent">
+              <MappingFragment StoreEntitySet="Klijent">
+                <ScalarProperty Name="KlijentID" ColumnName="KlijentID" />
+                <ScalarProperty Name="Telefon" ColumnName="Telefon" />
+                <ScalarProperty Name="Adresa" ColumnName="Adresa" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Komentar">
+            <EntityTypeMapping TypeName="TepihServisDBModel.Komentar">
+              <MappingFragment StoreEntitySet="Komentar">
+                <ScalarProperty Name="KomentarID" ColumnName="KomentarID" />
+                <ScalarProperty Name="Tekst" ColumnName="Tekst" />
+                <ScalarProperty Name="Datum" ColumnName="Datum" />
+                <ScalarProperty Name="KlijentID" ColumnName="KlijentID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Korisnik">
+            <EntityTypeMapping TypeName="TepihServisDBModel.Korisnik">
+              <MappingFragment StoreEntitySet="Korisnik">
+                <ScalarProperty Name="KorisnikID" ColumnName="KorisnikID" />
+                <ScalarProperty Name="Ime" ColumnName="Ime" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Lozinka" ColumnName="Lozinka" />
+                <ScalarProperty Name="Uloga" ColumnName="Uloga" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Narudzbina">
+            <EntityTypeMapping TypeName="TepihServisDBModel.Narudzbina">
+              <MappingFragment StoreEntitySet="Narudzbina">
+                <ScalarProperty Name="NarudzbinaID" ColumnName="NarudzbinaID" />
+                <ScalarProperty Name="Datum" ColumnName="Datum" />
+                <ScalarProperty Name="KlijentID" ColumnName="KlijentID" />
+                <ScalarProperty Name="StatusID" ColumnName="StatusID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Ocjena">
+            <EntityTypeMapping TypeName="TepihServisDBModel.Ocjena">
+              <MappingFragment StoreEntitySet="Ocjena">
+                <ScalarProperty Name="OcjenaID" ColumnName="OcjenaID" />
+                <ScalarProperty Name="Vrijednost" ColumnName="Vrijednost" />
+                <ScalarProperty Name="KlijentID" ColumnName="KlijentID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="StatusNarudzbine">
+            <EntityTypeMapping TypeName="TepihServisDBModel.StatusNarudzbine">
+              <MappingFragment StoreEntitySet="StatusNarudzbine">
+                <ScalarProperty Name="StatusID" ColumnName="StatusID" />
+                <ScalarProperty Name="Naziv" ColumnName="Naziv" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="StavkaNarudzbine">
+            <EntityTypeMapping TypeName="TepihServisDBModel.StavkaNarudzbine">
+              <MappingFragment StoreEntitySet="StavkaNarudzbine">
+                <ScalarProperty Name="StavkaID" ColumnName="StavkaID" />
+                <ScalarProperty Name="Povrsina" ColumnName="Povrsina" />
+                <ScalarProperty Name="Cijena" ColumnName="Cijena" />
+                <ScalarProperty Name="NarudzbinaID" ColumnName="NarudzbinaID" />
+                <ScalarProperty Name="TepihID" ColumnName="TepihID" />
+                <ScalarProperty Name="UslugaID" ColumnName="UslugaID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tepih">
+            <EntityTypeMapping TypeName="TepihServisDBModel.Tepih">
+              <MappingFragment StoreEntitySet="Tepih">
+                <ScalarProperty Name="TepihID" ColumnName="TepihID" />
+                <ScalarProperty Name="Naziv" ColumnName="Naziv" />
+                <ScalarProperty Name="Tip" ColumnName="Tip" />
+                <ScalarProperty Name="Materijal" ColumnName="Materijal" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Usluga">
+            <EntityTypeMapping TypeName="TepihServisDBModel.Usluga">
+              <MappingFragment StoreEntitySet="Usluga">
+                <ScalarProperty Name="UslugaID" ColumnName="UslugaID" />
+                <ScalarProperty Name="Naziv" ColumnName="Naziv" />
+                <ScalarProperty Name="CijenaPoKvadratu" ColumnName="CijenaPoKvadratu" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Zaposleni">
+            <EntityTypeMapping TypeName="TepihServisDBModel.Zaposleni">
+              <MappingFragment StoreEntitySet="Zaposleni">
+                <ScalarProperty Name="ZaposleniID" ColumnName="ZaposleniID" />
+                <ScalarProperty Name="Ime" ColumnName="Ime" />
+                <ScalarProperty Name="Pozicija" ColumnName="Pozicija" />
+                <ScalarProperty Name="Plata" ColumnName="Plata" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="Sp_FiltrirajNarudzbine" FunctionName="TepihServisDBModel.Store.Sp_FiltrirajNarudzbine">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="TepihServisDBModel.Sp_FiltrirajNarudzbine_Result">
+                <ScalarProperty Name="NarudzbinaID" ColumnName="NarudzbinaID" />
+                <ScalarProperty Name="Datum" ColumnName="Datum" />
+                <ScalarProperty Name="StatusNaziv" ColumnName="StatusNaziv" />
+                <ScalarProperty Name="KlijentIme" ColumnName="KlijentIme" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

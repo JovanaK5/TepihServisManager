@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="742d397967cf4788b0303b492cf72e29" Name="Diagram1">
+        <EntityTypeShape EntityType="TepihServisDBModel.Admin" Width="1.5" PointX="3" PointY="4.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="TepihServisDBModel.Dostava" Width="1.5" PointX="10.5" PointY="8.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="TepihServisDBModel.Klijent" Width="1.5" PointX="3" PointY="8" IsExpanded="true" />
+        <EntityTypeShape EntityType="TepihServisDBModel.Komentar" Width="1.5" PointX="5.25" PointY="7" IsExpanded="true" />
+        <EntityTypeShape EntityType="TepihServisDBModel.Korisnik" Width="1.5" PointX="0.75" PointY="6.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="TepihServisDBModel.Narudzbina" Width="1.5" PointX="8.25" PointY="7.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="TepihServisDBModel.Ocjena" Width="1.5" PointX="5.25" PointY="13" IsExpanded="true" />
+        <EntityTypeShape EntityType="TepihServisDBModel.StatusNarudzbine" Width="1.5" PointX="6" PointY="10.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="TepihServisDBModel.StavkaNarudzbine" Width="1.5" PointX="13.5" PointY="7.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="TepihServisDBModel.Tepih" Width="1.5" PointX="11.25" PointY="5" IsExpanded="true" />
+        <EntityTypeShape EntityType="TepihServisDBModel.Usluga" Width="1.5" PointX="11.25" PointY="11.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="TepihServisDBModel.Zaposleni" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <AssociationConnector Association="TepihServisDBModel.FK__Admin__AdminID__3B75D760" ManuallyRouted="false" />
+        <AssociationConnector Association="TepihServisDBModel.FK__Dostava__Narudzb__534D60F1" ManuallyRouted="false" />
+        <AssociationConnector Association="TepihServisDBModel.FK__Klijent__Klijent__3E52440B" ManuallyRouted="false" />
+        <AssociationConnector Association="TepihServisDBModel.FK__Komentar__Klijen__571DF1D5" ManuallyRouted="false" />
+        <AssociationConnector Association="TepihServisDBModel.FK__Narudzbin__Klije__44FF419A" ManuallyRouted="false" />
+        <AssociationConnector Association="TepihServisDBModel.FK__Ocjena__KlijentI__5AEE82B9" ManuallyRouted="false" />
+        <AssociationConnector Association="TepihServisDBModel.FK__Narudzbin__Statu__45F365D3" ManuallyRouted="false" />
+        <AssociationConnector Association="TepihServisDBModel.FK__StavkaNar__Narud__4D94879B" ManuallyRouted="false" />
+        <AssociationConnector Association="TepihServisDBModel.FK__StavkaNar__Tepih__4E88ABD4" ManuallyRouted="false" />
+        <AssociationConnector Association="TepihServisDBModel.FK__StavkaNar__Uslug__4F7CD00D" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
