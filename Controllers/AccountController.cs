@@ -8,17 +8,16 @@ namespace TepihServisManager.Controllers
 {
     public class AccountController : Controller
     {
-        // Ako ti i dalje crveni "TepihServisDBEntities", samo dodaj broj 1 na kraj: TepihServisDBEntities1
         private TepihServisDBEntities1 db = new TepihServisDBEntities1();
 
-        // 1. REGISTRACIJA - GET
+        // Registracija - GET
         [HttpGet]
         public ActionResult Register()
         {
             return View();
         }
 
-        // 2. REGISTRACIJA - POST
+        // Registracija - POST
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Register(string ime, string email, string lozinka, string telefon, string adresa)
@@ -32,19 +31,18 @@ namespace TepihServisManager.Controllers
 
             try
             {
-                // Kreiramo korisnika (Usklađeno tačno sa tvojom bazom gdje ima samo Ime)
+                // Kreiramo korisnika
                 Korisnik noviKorisnik = new Korisnik
                 {
                     Ime = ime,
                     Email = email,
                     Lozinka = lozinka,
-                    Uloga = "Korisnik" // Postavljamo podrazumijevanu ulogu iz baze
+                    Uloga = "Korisnik" // Podrazumijevana uloga
                 };
 
                 db.Korisnik.Add(noviKorisnik);
-                db.SaveChanges(); // Čuvamo da baza generiše KorisnikID
+                db.SaveChanges();
 
-                // Kreiramo klijenta sa istim ID-jem (Veza 1:1)
                 Klijent noviKlijent = new Klijent
                 {
                     KlijentID = noviKorisnik.KorisnikID,
@@ -64,14 +62,14 @@ namespace TepihServisManager.Controllers
             }
         }
 
-        // 3. LOGIN - GET
+        // Login - GET
         [HttpGet]
         public ActionResult Login()
         {
             return View();
         }
 
-        // 4. LOGIN - POST
+        // Login - POST
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Login(string email, string lozinka)
@@ -81,12 +79,12 @@ namespace TepihServisManager.Controllers
             if (korisnik != null)
             {
                 Session["KorisnikID"] = korisnik.KorisnikID;
-                Session["Ime"] = korisnik.Ime;
+                Session["KorisnikIme"] = korisnik.Ime;
                 Session["Uloga"] = korisnik.Uloga;
 
                 if (korisnik.Uloga == "Admin")
                 {
-                    return RedirectToAction("Dashboard", "Admin");
+                    return RedirectToAction("SveNarudzbine", "Admin");
                 }
                 return RedirectToAction("MojeNarudzbine", "Korisnik");
             }
@@ -95,11 +93,12 @@ namespace TepihServisManager.Controllers
             return View();
         }
 
-        // 5. LOGOUT
+        // Metoda za odjavu
         public ActionResult Logout()
         {
-            Session.Clear();
-            return RedirectToAction("Login");
+            Session.Clear(); // Briše sve podatke iz sesije
+            Session.Abandon();
+            return RedirectToAction("Login", "Account"); // Vraća na login ekran
         }
 
         protected override void Dispose(bool disposing)

@@ -3,32 +3,74 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <title>@ViewBag.Title - Tepih Servis Manager</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body>
     <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark">
         <div class="container">
-            @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            @Html.ActionLink("🧼 Tepih Servis", "Index", "Home", new { area = "" }, new { @class = "navbar-brand fw-bold" })
             <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" title="Toggle navigation" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
+
             <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">
                 <ul class="navbar-nav flex-grow-1">
-                    <li>@Html.ActionLink("Home", "Index", "Home", new { area = "" }, new { @class = "nav-link" })</li>
-                    <li>@Html.ActionLink("About", "About", "Home", new { area = "" }, new { @class = "nav-link" })</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home", new { area = "" }, new { @class = "nav-link" })</li>
+                    <li>@Html.ActionLink("Početna", "Index", "Home", new { area = "" }, new { @class = "nav-link" })</li>
+
+                    @if (Session["KorisnikID"] != null)
+                    {
+                        if (Session["Uloga"] != null && Session["Uloga"].ToString() == "Admin")
+                        {
+                            <li class="nav-item">
+                                <a href="@Url.Action("SveNarudzbine", "Admin")" class="nav-link fw-bold text-warning">⚙️ Admin Panel</a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a href="@Url.Action("MojeNarudzbine", "Korisnik")" class="nav-link">📋 Moje Narudžbine</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="@Url.Action("NovaNarudzbina", "Korisnik")" class="nav-link">🧼 Nova Narudžbina</a>
+                            </li>
+                        }
+                    }
+                </ul>
+
+                <ul class="navbar-nav">
+                    @if (Session["KorisnikID"] == null)
+                    {
+                        <li class="nav-item">
+                            <a href="@Url.Action("Login", "Account")" class="nav-link">Prijava</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="@Url.Action("Register", "Account")" class="nav-link">Registracija</a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="nav-item d-flex align-items-center me-3">
+                            <span class="navbar-text text-white-50">
+                                👤 Zdravo, <strong>@Session["KorisnikIme"]</strong>
+                            </span>
+                        </li>
+                        <li class="nav-item">
+                            <a href="@Url.Action("Logout", "Account")" class="btn btn-outline-danger btn-sm my-1">Odjavi se</a>
+                        </li>
+                    }
                 </ul>
             </div>
         </div>
     </nav>
+
     <div class="container body-content">
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+            <p>&copy; @DateTime.Now.Year - Tepih Servis Manager</p>
         </footer>
     </div>
 
