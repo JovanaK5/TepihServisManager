@@ -13,7 +13,7 @@ namespace TepihServisManager.Controllers
         // Napredna pretraga i filtriranje narudžbina
         public ActionResult SveNarudzbine(string pojamPretrage, int? statusFilter)
         {
-            // BEZBJEDNOSNA PROVJERA: Ako korisnik nije ulogovan ILI nema ulogu Admin, vrati ga na Login
+            // BEZBJEDNOSNA PROVJERA: Ako korisnik nije ulogovan ili nema ulogu Admin, vrati ga na Login
             if (Session["KorisnikID"] == null || Session["Uloga"] == null || Session["Uloga"].ToString() != "Admin")
             {
                 return RedirectToAction("Login", "Account");

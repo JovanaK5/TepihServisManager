@@ -115,9 +115,15 @@
                                             <input type="hidden" name="narudzbinaId" value="@item.NarudzbinaID" />
 
                                             <select name="noviStatusId" class="form-select form-select-sm">
-                                                <option value="1" @(item.StatusID == 1 ? "selected" : "")>Na čekanju</option>
-                                                <option value="2" @(item.StatusID == 2 ? "selected" : "")>U procesu</option>
-                                                <option value="3" @(item.StatusID == 3 ? "selected" : "")>Završeno</option>
+                                                @if (ViewBag.Statusi != null)
+                                                {
+                                                    foreach (var status in ViewBag.Statusi)
+                                                    {
+                                                        <option value="@status.StatusID" @(item.StatusID == status.StatusID ? "selected" : "")>
+                                                            @status.Naziv
+                                                        </option>
+                                                    }
+                                                }
                                             </select>
 
                                             <button type="submit" class="btn btn-sm btn-dark fw-bold px-3">
