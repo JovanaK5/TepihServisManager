@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.Entity; 
 using System.Linq;
 using System.Web.Mvc;
 using TepihServisManager.Models;
@@ -9,33 +10,37 @@ namespace TepihServisManager.Controllers
     {
         private TepihServisDBEntities1 db = new TepihServisDBEntities1();
 
-        // Pregled svih narudžbina 
-        public ActionResult SveNarudzbine()
+        // Prikaz svih narudžbina sa mogućnošću pretrage po imenu klijenta
+        public ActionResult SveNarudzbine(string pojamPretrage)
         {
-            // Izvlačimo sve narudžbine iz baze, sortirane od najnovijih
-            // Uključujemo povezane tabele Klijent i StatusNarudzbine da bismo imali njihove podatke
-            var sveNarudzbine = db.Narudzbina
-                                  .Include("Klijent")
-                                  .Include("StatusNarudzbine")
-                                  .OrderByDescending(n => n.Datum)
-                                  .ToList();
+          
+            var upit = db.Narudzbina
+                         .Include(n => n.Klijent)
+                         .Include(n => n.Klijent.Korisnik) 
+                         .Include(n => n.StatusNarudzbine);
 
+            // Ako je admin unio tekst u pretragu, filtriramo po imenu iz tabele Korisnik
+            if (!string.IsNullOrEmpty(pojamPretrage))
+            {
+                upit = upit.Where(n => n.Klijent.Korisnik.Ime.Contains(pojamPretrage));
+                ViewBag.TrenutnaPretraga = pojamPretrage; 
+            }
+
+            var sveNarudzbine = upit.OrderByDescending(n => n.Datum).ToList();
             return View(sveNarudzbine);
         }
 
-        // Promjena statusa narudžbine - POST metoda koja prima ID narudžbine i novi ID statusa
+        // Promjena statusa narudžbine
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult PromijeniStatus(int narudzbinaId, int noviStatusId)
         {
             try
             {
-                // Pronalazimo tačnu narudžbinu
                 var narudzbina = db.Narudzbina.Find(narudzbinaId);
 
                 if (narudzbina != null)
                 {
-                    // Dodjeljujemo joj novi StatusID koji je radnik izabrao
                     narudzbina.StatusID = noviStatusId;
                     db.SaveChanges();
                 }
