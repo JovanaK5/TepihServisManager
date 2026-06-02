@@ -178,3 +178,24 @@ BEGIN
     RETURN ISNULL(@Broj, 0);
 END;
 GO
+
+-- druga stored procedura: izvještaj o zaradi i obimu posla za menadžment
+-- mogla bi da se koristi za potrebe administracije i analitike poslovanja u bazi podataka
+GO
+CREATE PROCEDURE Sp_IzvjestajZarade
+    @DatumOd DATETIME,
+    @DatumDo DATETIME
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT 
+        COUNT(DISTINCT n.NarudzbinaID) AS UkupnoNarudzbina,
+        COUNT(s.StavkaID) AS UkupnoOpranihTepiha,
+        SUM(s.Povrsina) AS UkupnaKvadraturaU_m2,
+        SUM(s.Cijena) AS UkupnaZarada_EUR
+    FROM Narudzbina n
+    JOIN StavkaNarudzbine s ON n.NarudzbinaID = s.NarudzbinaID
+    WHERE n.Datum BETWEEN @DatumOd AND @DatumDo;
+END;
+GO
