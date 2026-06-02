@@ -1,0 +1,62 @@
+﻿@{
+    ViewBag.Title = "Registracija Klijenta";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-lg border-0 rounded-3">
+                <div class="card-header bg-success text-white text-center py-3">
+                    <h4 class="mb-0 fw-bold">✨ Kreirajte Korisnički Nalog</h4>
+                </div>
+                <div class="card-body p-4">
+
+                    @if (ViewBag.Error != null)
+                    {
+                        <div class="alert alert-danger shadow-sm">
+                            ⚠️ @ViewBag.Error
+                        </div>
+                    }
+
+                    <form action="@Url.Action("Register", "Account")" method="post">
+                        @Html.AntiForgeryToken()
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Ime i Prezime</label>
+                            <input type="text" name="ime" class="form-control" placeholder="Petar Petrović" required />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Email adresa</label>
+                            <input type="email" name="email" class="form-control" placeholder="petar@email.com" required />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Lozinka</label>
+                            <input type="password" name="lozinka" class="form-control" placeholder="Unesite lozinku" required />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Broj telefona</label>
+                            <input type="text" name="telefon" class="form-control" placeholder="+382 6X XXX XXX" required />
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Adresa stanovanja</label>
+                            <input type="text" name="adresa" class="form-control" placeholder="Njegoševa 12, Podgorica" required />
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-success btn-lg shadow-sm">Registruj se</button>
+                        </div>
+
+                        <p class="text-center mt-3 mb-0 text-muted">
+                            Već imate nalog? <a href="@Url.Action("Login","Account")" class="text-success fw-bold text-decoration-none">Prijavite se ovdje</a>
+                        </p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
