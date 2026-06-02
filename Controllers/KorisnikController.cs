@@ -1,17 +1,89 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using TepihServisManager.Models;
 
 namespace TepihServisManager.Controllers
 {
     public class KorisnikController : Controller
     {
-        // GET: Korisnik
-        public ActionResult Index()
+        private TepihServisDBEntities1 db = new TepihServisDBEntities1();
+
+        private bool IsKorisnikUlogovan()
         {
+            return Session["KorisnikID"] != null;
+        }
+
+        // Prikaz svih narudžbina trenutnog korisnika
+        public ActionResult MojeNarudzbine()
+        {
+            if (!IsKorisnikUlogovan())
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            int trenutniKorisnikId = Convert.ToInt32(Session["KorisnikID"]);
+
+            var narudzbine = db.Narudzbina
+                               .Where(n => n.KlijentID == trenutniKorisnikId)
+                               .OrderByDescending(n => n.Datum)
+                               .ToList();
+
+            return View(narudzbine);
+        }
+
+        // Kreiranje nove narudžbine - GET (Prikaz prazne stranice)
+        [HttpGet]
+        public ActionResult NovaNarudzbina()
+        {
+            if (!IsKorisnikUlogovan())
+            {
+                return RedirectToAction("Login", "Account");
+            }
             return View();
+        }
+
+        // Kreiranje nove narudžbine - POST (Snimanje u bazu)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult NovaNarudzbina(FormCollection forma)
+        {
+            if (!IsKorisnikUlogovan())
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            int trenutniKorisnikId = Convert.ToInt32(Session["KorisnikID"]);
+
+            try
+            {
+                Narudzbina novaNarudzbina = new Narudzbina
+                {
+                    KlijentID = trenutniKorisnikId,
+                    Datum = DateTime.Now,
+                    StatusID = 1 //Početni status iz baze
+                };
+
+                db.Narudzbina.Add(novaNarudzbina);
+                db.SaveChanges();
+
+                return RedirectToAction("MojeNarudzbine");
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Error = "Greška pri kreiranju narudžbine: " + ex.Message;
+                return View();
+            }
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                db.Dispose();
+            }
+            base.Dispose(disposing);
         }
     }
 }

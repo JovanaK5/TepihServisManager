@@ -1,0 +1,71 @@
+﻿@model IEnumerable<TepihServisManager.Models.Narudzbina>
+
+@{
+    ViewBag.Title = "Moje Narudžbine";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold text-dark">📋 Moje Narudžbine</h2>
+            <p class="text-muted mb-0">Pregled svih Vaših zahtjeva za pranje tepiha</p>
+        </div>
+        <a href="@Url.Action("NovaNarudzbina", "Korisnik")" class="btn btn-primary btn-lg shadow-sm">
+            ➕ Nova Narudžbina
+        </a>
+    </div>
+
+    <div class="card shadow-sm border-0 rounded-3">
+        <div class="card-body p-0">
+            @if (!Model.Any())
+            {
+                <div class="text-center py-5">
+                    <h5 class="text-muted">Nemate istoriju narudžbina.</h5>
+                    <p class="text-muted small">Kliknite na dugme iznad da pošaljete svoj prvi tepih na pranje!</p>
+                </div>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th class="ps-4 py-3">ID Narudžbine</th>
+                                <th class="py-3">Datum kreiranja</th>
+                                <th class="py-3">Status</th>
+                                <th class="pe-4 py-3 text-end">Detalji</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td class="ps-4 fw-bold text-secondary">#@item.NarudzbinaID</td>
+                                    <td>
+                                        @(item.Datum.HasValue ? item.Datum.Value.ToString("dd.MM.yyyy. HH:mm") : "Nema datuma")
+                                    </td>
+                                    <td>
+                                        @if (item.StatusNarudzbine != null)
+                                        {
+                                            <span class="badge bg-info text-dark rounded-pill px-3 py-2 fw-semibold">
+                                                @item.StatusNarudzbine.Naziv
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-secondary rounded-pill px-3 py-2">Nepoznato</span>
+                                        }
+                                    </td>
+                                    <td class="pe-4 text-end">
+                                        <span class="text-muted small">U obradi</span>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+    </div>
+</div>
