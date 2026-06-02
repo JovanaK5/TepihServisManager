@@ -1,0 +1,52 @@
+﻿@{
+    ViewBag.Title = "Nova Narudžbina";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-lg border-0 rounded-3">
+                <div class="card-header bg-primary text-white text-center py-3">
+                    <h4 class="mb-0 fw-bold">🧼 Pošaljite Tepihe na Pranje</h4>
+                </div>
+                <div class="card-body p-4 text-center">
+
+                    @if (ViewBag.Error != null)
+                    {
+                        <div class="alert alert-danger shadow-sm">
+                            ⚠️ @ViewBag.Error
+                        </div>
+                    }
+
+                    <p class="text-muted fs-5 mb-4">
+                        Klikom na dugme ispod kreirate novi zahtjev za preuzimanje i pranje Vaših tepiha. Naš tim će Vas kontaktirati u najkraćem roku!
+                    </p>
+
+                    <form action="@Url.Action("NovaNarudzbina", "Korisnik")" method="post">
+                        @Html.AntiForgeryToken()
+
+                        <div class="alert alert-light border border-primary-subtle text-start mb-4">
+                            <h6 class="fw-bold text-primary mb-2">📌 Informacije o proceduri:</h6>
+                            <ul class="small mb-0 text-secondary">
+                                <li>Kurir dolazi na Vašu adresu stanovanja.</li>
+                                <li>Mjerenje kvadrature i obračun cijene vrši se u servisu.</li>
+                                <li>Status narudžbine možete pratiti na Vašem panelu.</li>
+                            </ul>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary btn-lg shadow-sm fw-bold">
+                                🚀 Potvrdi i Pošalji Zahtjev
+                            </button>
+                            <a href="@Url.Action("MojeNarudzbine", "Korisnik")" class="btn btn-outline-secondary">
+                                Odustani
+                            </a>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
