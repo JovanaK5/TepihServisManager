@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Data.Entity; 
+using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
 using TepihServisManager.Models;
@@ -10,21 +10,31 @@ namespace TepihServisManager.Controllers
     {
         private TepihServisDBEntities1 db = new TepihServisDBEntities1();
 
-        // Prikaz svih narudžbina sa mogućnošću pretrage po imenu klijenta
-        public ActionResult SveNarudzbine(string pojamPretrage)
+        // Napredna pretraga i filtriranje narudžbina
+        public ActionResult SveNarudzbine(string pojamPretrage, int? statusFilter)
         {
-          
             var upit = db.Narudzbina
                          .Include(n => n.Klijent)
-                         .Include(n => n.Klijent.Korisnik) 
+                         .Include(n => n.Klijent.Korisnik)
                          .Include(n => n.StatusNarudzbine);
 
-            // Ako je admin unio tekst u pretragu, filtriramo po imenu iz tabele Korisnik
+            // Pretraga po imenu klijenta ili broju telefona
             if (!string.IsNullOrEmpty(pojamPretrage))
             {
-                upit = upit.Where(n => n.Klijent.Korisnik.Ime.Contains(pojamPretrage));
-                ViewBag.TrenutnaPretraga = pojamPretrage; 
+                upit = upit.Where(n => n.Klijent.Korisnik.Ime.Contains(pojamPretrage) ||
+                                       n.Klijent.Telefon.Contains(pojamPretrage));
+
+                ViewBag.TrenutnaPretraga = pojamPretrage;
             }
+
+            // Filtriranje po statusu 
+            if (statusFilter.HasValue && statusFilter.Value > 0)
+            {
+                upit = upit.Where(n => n.StatusID == statusFilter.Value);
+                ViewBag.TrenutniStatusFilter = statusFilter.Value;
+            }
+
+            ViewBag.Statusi = db.StatusNarudzbine.ToList();
 
             var sveNarudzbine = upit.OrderByDescending(n => n.Datum).ToList();
             return View(sveNarudzbine);
