@@ -34,6 +34,7 @@
                                 <th class="ps-4 py-3">ID Narudžbine</th>
                                 <th class="py-3">Datum kreiranja</th>
                                 <th class="py-3">Status</th>
+                                <th class="py-3">Ukupna Cijena</th>
                                 <th class="pe-4 py-3 text-end">Detalji</th>
                             </tr>
                         </thead>
@@ -57,8 +58,27 @@
                                             <span class="badge bg-secondary rounded-pill px-3 py-2">Nepoznato</span>
                                         }
                                     </td>
+
+                                    <td class="fw-bold text-success">
+                                        @{
+                                            // Preko .Sum(s => s.Cijena) izvlačimo zbir koji može biti null,
+                                            // a sa ?? 0 ga pretvaramo u običnu nulu i rješavamo crvenilo!
+                                            decimal ukupno = item.StavkaNarudzbine != null
+                                                             ? (item.StavkaNarudzbine.Sum(s => s.Cijena) ?? 0)
+                                                             : 0;
+                                        }
+                                        @if (ukupno > 0)
+                                        {
+                                            <span>@ukupno.ToString("0.00") €</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted small fw-normal">U obradi (čeka mjerenje)</span>
+                                        }
+                                    </td>
+
                                     <td class="pe-4 text-end">
-                                        <span class="text-muted small">U obradi</span>
+                                        <span class="badge bg-light text-secondary rounded-pill border px-3 py-2">U obradi</span>
                                     </td>
                                 </tr>
                             }
