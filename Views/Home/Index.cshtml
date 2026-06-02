@@ -1,33 +1,66 @@
 ﻿@{
-    ViewBag.Title = "Home Page";
+    ViewBag.Title = "Početna";
 }
 
-<main>
-    <section class="row" aria-labelledby="aspnetTitle">
-        <h1 id="title">ASP.NET</h1>
-        <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-        <p><a href="https://asp.net" class="btn btn-primary btn-md">Learn more &raquo;</a></p>
-    </section>
+<div class="p-5 mb-4 bg-light rounded-3 text-center shadow-sm mt-4">
+    <div class="container-fluid py-5">
+        <h1 class="display-4 fw-bold text-dark">✨ Tepih Servis Manager</h1>
+        <p class="col-md-8 mx-auto fs-5 text-muted">
+            Dobrodošli u sistem za automatizaciju rada i upravljanje narudžbinama u servisu za čišćenje tepiha.
+        </p>
 
-    <div class="row">
-        <section class="col-md-4" aria-labelledby="gettingStartedTitle">
-            <h2 id="gettingStartedTitle">Getting started</h2>
-            <p>
-                ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-                enables a clean separation of concerns and gives you full control over markup
-                for enjoyable, agile development.
-            </p>
-            <p><a class="btn btn-outline-dark" href="https://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
-        </section>
-        <section class="col-md-4" aria-labelledby="librariesTitle">
-            <h2 id="librariesTitle">Get more libraries</h2>
-            <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-            <p><a class="btn btn-outline-dark" href="https://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
-        </section>
-        <section class="col-md-4" aria-labelledby="hostingTitle">
-            <h2 id="hostingTitle">Web Hosting</h2>
-            <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-            <p><a class="btn btn-outline-dark" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
-        </section>
+        @if (Session["KorisnikID"] == null)
+        {
+            <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mt-4">
+                <a href="@Url.Action("Login", "Account")" class="btn btn-primary btn-lg px-4 gap-3 shadow">Prijava na Sistem</a>
+                <a href="@Url.Action("Register", "Account")" class="btn btn-outline-secondary btn-lg px-4">Kreiraj Nalog</a>
+            </div>
+        }
+        else
+        {
+            <div class="mt-4">
+                <h5 class="text-success fw-bold">🟢 Uspješno ste autorizovani kao @Session["Uloga"]!</h5>
+                <p class="text-secondary">Koristite gornji navigacioni meni za upravljanje funkcionalnostima.</p>
+            </div>
+        }
     </div>
-</main>
+</div>
+
+<div class="row g-4 py-5 row-cols-1 row-cols-lg-3">
+    @if (Session["Uloga"] != null && Session["Uloga"].ToString() == "Admin")
+    {
+        <div class="feature col">
+            <div class="feature-icon d-inline-flex align-items-center justify-content-center bg-danger text-white fs-2 mb-3 rounded px-3 py-2 shadow-sm">⚙️</div>
+            <h3 class="fs-4 fw-bold">Upravljanje Sistemom</h3>
+            <p class="text-muted">Pregled svih narudžbina na nivou servisa i brza promjena statusa tepiha u realnom vremenu.</p>
+        </div>
+        <div class="feature col">
+            <div class="feature-icon d-inline-flex align-items-center justify-content-center bg-success text-white fs-2 mb-3 rounded px-3 py-2 shadow-sm">🔍</div>
+            <h3 class="fs-4 fw-bold">Napredna Pretraga</h3>
+            <p class="text-muted">Mogućnost brze pretrage baze podataka po imenu klijenta ili broju telefona direktno sa panela.</p>
+        </div>
+        <div class="feature col">
+            <div class="feature-icon d-inline-flex align-items-center justify-content-center bg-dark text-white fs-2 mb-3 rounded px-3 py-2 shadow-sm">💾</div>
+            <h3 class="fs-4 fw-bold">CRUD nad Podacima</h3>
+            <p class="text-muted">Direktna kontrola, izmjena i ažuriranje SQL Server baze podataka kroz Entity Framework.</p>
+        </div>
+    }
+    else
+    {
+        <div class="feature col">
+            <div class="feature-icon d-inline-flex align-items-center justify-content-center bg-primary text-white fs-2 mb-3 rounded px-3 py-2 shadow-sm">🧼</div>
+            <h3 class="fs-4 fw-bold">Jednostavno Naručivanje</h3>
+            <p class="text-muted">Pošaljite zahtjev za pranje tepiha u samo jednom kliku. Naš kurir dolazi na Vašu kućnu adresu.</p>
+        </div>
+        <div class="feature col">
+            <div class="feature-icon d-inline-flex align-items-center justify-content-center bg-info text-dark fs-2 mb-3 rounded px-3 py-2 shadow-sm">📦</div>
+            <h3 class="fs-4 fw-bold">Praćenje Statusa</h3>
+            <p class="text-muted">U svakom trenutku znajte da li je Vaš tepih na čekanju, u mašini na pranju, ili spreman za preuzimanje.</p>
+        </div>
+        <div class="feature col">
+            <div class="feature-icon d-inline-flex align-items-center justify-content-center bg-secondary text-white fs-2 mb-3 rounded px-3 py-2 shadow-sm">📞</div>
+            <h3 class="fs-4 fw-bold">Korisnička Podrška</h3>
+            <p class="text-muted">Istorija svih Vaših narudžbina je bezbjedno sačuvana. Za sve izmjene, naš tim Vam stoji na raspolaganju.</p>
+        </div>
+    }
+</div>
