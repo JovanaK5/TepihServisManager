@@ -13,6 +13,12 @@ namespace TepihServisManager.Controllers
         // Napredna pretraga i filtriranje narudžbina
         public ActionResult SveNarudzbine(string pojamPretrage, int? statusFilter)
         {
+            // BEZBJEDNOSNA PROVJERA: Ako korisnik nije ulogovan ILI nema ulogu Admin, vrati ga na Login
+            if (Session["KorisnikID"] == null || Session["Uloga"] == null || Session["Uloga"].ToString() != "Admin")
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
             var upit = db.Narudzbina
                          .Include(n => n.Klijent)
                          .Include(n => n.Klijent.Korisnik)
@@ -45,6 +51,12 @@ namespace TepihServisManager.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult PromijeniStatus(int narudzbinaId, int noviStatusId)
         {
+            // BEZBJEDNOSNA PROVJERA: Spriječavamo neovlašćeno slanje POST zahtjeva
+            if (Session["KorisnikID"] == null || Session["Uloga"] == null || Session["Uloga"].ToString() != "Admin")
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
             try
             {
                 var narudzbina = db.Narudzbina.Find(narudzbinaId);
