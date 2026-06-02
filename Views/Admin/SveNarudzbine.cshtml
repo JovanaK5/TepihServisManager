@@ -8,7 +8,7 @@
 <div class="container-fluid mt-5 px-4">
     <div class="mb-4">
         <h2 class="fw-bold text-dark">⚙️ Admin Panel: Sve Narudžbine</h2>
-        <p class="text-muted">Pregled i upravljanje statusima svih zahtjeva na nivou servisa</p>
+        <p class="text-muted">Pregled, brza pretraga i upravljanje statusima svih zahtjeva u servisu</p>
     </div>
 
     @if (TempData["Error"] != null)
@@ -18,12 +18,52 @@
         </div>
     }
 
+    <div class="card shadow-sm border-0 bg-light mb-4 rounded-3">
+        <div class="card-body p-3">
+            <form action="@Url.Action("SveNarudzbine", "Admin")" method="get" class="row g-3 align-items-center">
+
+                <div class="col-md-5">
+                    <div class="input-group">
+                        <span class="input-group-text bg-white text-muted">🔍</span>
+                        <input type="text" name="pojamPretrage" class="form-control"
+                               placeholder="Pretraži po imenu klijenta ili telefonu..."
+                               value="@ViewBag.TrenutnaPretraga" />
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <select name="statusFilter" class="form-select">
+                        <option value="0">-- Filtriraj po statusu (Sve) --</option>
+                        @if (ViewBag.Statusi != null)
+                        {
+                            foreach (var status in ViewBag.Statusi)
+                            {
+                                <option value="@status.StatusID" @(ViewBag.TrenutniStatusFilter == status.StatusID ? "selected" : "")>
+                                    @status.Naziv
+                                </option>
+                            }
+                        }
+                    </select>
+                </div>
+
+                <div class="col-md-3 d-flex gap-2">
+                    <button type="submit" class="btn btn-primary w-100 fw-bold">Filtriraj</button>
+                    @if (!string.IsNullOrEmpty(ViewBag.TrenutnaPretraga) || ViewBag.TrenutniStatusFilter != null)
+                    {
+                        <a href="@Url.Action("SveNarudzbine", "Admin")" class="btn btn-outline-secondary px-3" title="Poništi filtere">X</a>
+                    }
+                </div>
+
+            </form>
+        </div>
+    </div>
+
     <div class="card shadow-lg border-0 rounded-3">
         <div class="card-body p-0">
             @if (!Model.Any())
             {
                 <div class="text-center py-5">
-                    <h5 class="text-muted">Trenutno nema otvorenih narudžbina u bazi podataka.</h5>
+                    <h5 class="text-muted mb-0">Nema pronađenih narudžbina za unijete kriterijume pretrage.</h5>
                 </div>
             }
             else
@@ -46,7 +86,9 @@
                                 <tr>
                                     <td class="ps-4 fw-bold text-primary">#@item.NarudzbinaID</td>
                                     <td>
-                                        <div class="fw-bold text-dark">@(item.Klijent != null && item.Klijent.Korisnik != null ? item.Klijent.Korisnik.Ime : "Nepoznat klijent")</div>
+                                        <div class="fw-bold text-dark">
+                                            @(item.Klijent != null && item.Klijent.Korisnik != null ? item.Klijent.Korisnik.Ime : "Nepoznat klijent")
+                                        </div>
                                     </td>
                                     <td>
                                         <span class="text-secondary">@(item.Klijent != null ? item.Klijent.Telefon : "-")</span>
@@ -57,7 +99,6 @@
                                     <td>
                                         @if (item.StatusNarudzbine != null)
                                         {
-                                            // Dinamička boja značke u zavisnosti od ID-ja statusa
                                             string klasaBoje = item.StatusID == 1 ? "bg-warning text-dark" : item.StatusID == 2 ? "bg-info text-dark" : "bg-success text-white";
                                             <span class="badge @klasaBoje rounded-pill px-3 py-2 fw-semibold">
                                                 @item.StatusNarudzbine.Naziv
