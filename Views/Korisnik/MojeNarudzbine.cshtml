@@ -88,4 +88,30 @@
             }
         </div>
     </div>
+    <div class="card mt-4 shadow-sm border-0 rounded-3">
+        <div class="card-body">
+            <h5 class="fw-bold mb-3">💬 Ostavite utisak o našoj usluzi</h5>
+            @using (Html.BeginForm("DodajOcjenuIKomentar", "Korisnik", FormMethod.Post, new { @class = "row g-3" }))
+            {
+                @Html.AntiForgeryToken()
+                <div class="col-md-3">
+                    <label class="form-label">Ocjena:</label>
+                    <select name="ocjena" class="form-select">
+                        <option value="5">⭐⭐⭐⭐⭐ (5)</option>
+                        <option value="4">⭐⭐⭐⭐ (4)</option>
+                        <option value="3">⭐⭐⭐ (3)</option>
+                        <option value="2">⭐⭐ (2)</option>
+                        <option value="1">⭐ (1)</option>
+                    </select>
+                </div>
+                <div class="col-md-7">
+                    <label class="form-label">Vaš komentar:</label>
+                    <input type="text" name="tekstKomentara" class="form-control" placeholder="Napišite nešto o našoj usluzi..." required />
+                </div>
+                <div class="col-md-2 d-flex align-items-end">
+                    <button type="submit" class="btn btn-primary w-100">Pošalji</button>
+                </div>
+            }
+        </div>
+    </div>
 </div>
