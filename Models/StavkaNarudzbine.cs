@@ -15,7 +15,7 @@ namespace TepihServisManager.Models
     public partial class StavkaNarudzbine
     {
         public int StavkaID { get; set; }
-        public decimal Povrsina { get; set; }
+        public decimal Kvadratura { get; set; }
         public Nullable<decimal> Cijena { get; set; }
         public int NarudzbinaID { get; set; }
         public int TepihID { get; set; }

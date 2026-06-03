@@ -77,6 +77,41 @@ namespace TepihServisManager.Controllers
             }
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult DodajOcjenuIKomentar(int ocjena, string tekstKomentara)
+        {
+            if (!IsKorisnikUlogovan()) return RedirectToAction("Login", "Account");
+
+            int id = Convert.ToInt32(Session["KorisnikID"]);
+            try
+            {
+                // Dodavanje komentara
+                Komentar noviKomentar = new Komentar
+                {
+                    Tekst = tekstKomentara,
+                    Datum = DateTime.Now,
+                    KlijentID = id
+                };
+                db.Komentar.Add(noviKomentar);
+
+                // Dodavanje ocjene
+                Ocjena novaOcjena = new Ocjena
+                {
+                    Vrijednost = ocjena,
+                    KlijentID = id
+                };
+                db.Ocjena.Add(novaOcjena);
+
+                db.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Error = "Greška pri slanju: " + ex.Message;
+            }
+            return RedirectToAction("MojeNarudzbine");
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)

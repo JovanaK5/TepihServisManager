@@ -35,10 +35,10 @@ namespace TepihServisManager.Models
         public virtual DbSet<Narudzbina> Narudzbina { get; set; }
         public virtual DbSet<Ocjena> Ocjena { get; set; }
         public virtual DbSet<StatusNarudzbine> StatusNarudzbine { get; set; }
-        public virtual DbSet<StavkaNarudzbine> StavkaNarudzbine { get; set; }
         public virtual DbSet<Tepih> Tepih { get; set; }
         public virtual DbSet<Usluga> Usluga { get; set; }
         public virtual DbSet<Zaposleni> Zaposleni { get; set; }
+        public virtual DbSet<StavkaNarudzbine> StavkaNarudzbine { get; set; }
     
         public virtual ObjectResult<Sp_FiltrirajNarudzbine_Result> Sp_FiltrirajNarudzbine(Nullable<int> statusID, Nullable<int> klijentID)
         {

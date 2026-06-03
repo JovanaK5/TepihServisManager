@@ -199,3 +199,5 @@ BEGIN
     WHERE n.Datum BETWEEN @DatumOd AND @DatumDo;
 END;
 GO
+
+EXEC sp_rename 'StavkaNarudzbine.Povrsina', 'Kvadratura', 'COLUMN';
